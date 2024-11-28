@@ -17,10 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { registerUser, signInUser } from "@/app/actions/auth";
-import { register } from "module";
 import {
   Select,
   SelectContent,
@@ -30,8 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const RegisterForm = ({ role }: { role: string }) => {
+  const [loading, setLoading] = useState(false);
   const userRole = role === "instructor" ? "instructor" : "student";
   const router = useRouter();
   const formSchema = z.object({
@@ -73,9 +74,16 @@ const RegisterForm = ({ role }: { role: string }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
+      setLoading(true);
       await registerUser({ ...values, role: userRole });
-    } catch (error) {
-      console.log(error);
+
+      toast.success("Resitered has been successful.");
+      router.push("/login");
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,11 +91,11 @@ const RegisterForm = ({ role }: { role: string }) => {
     { value: "A+", label: "A+" },
     { value: "A-", label: "A-" },
     { value: "B+", label: "B+" },
-    { value: "B-", label: "B Negative" },
-    { value: "AB+", label: "AB Positive" },
-    { value: "AB-", label: "AB Negative" },
-    { value: "O+", label: "O Positive" },
-    { value: "O-", label: "O Negative" },
+    { value: "B-", label: "B-" },
+    { value: "AB+", label: "AB+" },
+    { value: "AB-", label: "AB-" },
+    { value: "O+", label: "O+" },
+    { value: "O-", label: "O-" },
   ];
 
   return (
@@ -96,32 +104,38 @@ const RegisterForm = ({ role }: { role: string }) => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-4 w-[80%]"
       >
-        <FormField
-          control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>First Name</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="First Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input type="text" placeholder="Last Name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex w-full gap-3">
+          <div className="w-[50%]">
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="First Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="w-[50%]">
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder="Last Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+        </div>
         <FormField
           control={form.control}
           name="email"
@@ -155,14 +169,16 @@ const RegisterForm = ({ role }: { role: string }) => {
             <FormItem>
               <FormLabel>Gender</FormLabel>
               <FormControl>
-                <RadioGroup {...field}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="male" id="r2" />
-                    <Label htmlFor="r2">Male</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="female" id="r3" />
-                    <Label htmlFor="r3">Female</Label>
+                <RadioGroup value={field.value} onValueChange={field.onChange}>
+                  <div className="flex gap-3">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="male" id="r2" />
+                      <Label htmlFor="r2">Male</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="female" id="r3" />
+                      <Label htmlFor="r3">Female</Label>
+                    </div>
                   </div>
                 </RadioGroup>
               </FormControl>
@@ -177,18 +193,18 @@ const RegisterForm = ({ role }: { role: string }) => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Select {...field}>
-                  <SelectTrigger className="w-[180px]">
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select blood group" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Blood Group</SelectLabel>
-                      <SelectItem value="apple">Apple</SelectItem>
-                      <SelectItem value="banana">Banana</SelectItem>
-                      <SelectItem value="blueberry">Blueberry</SelectItem>
-                      <SelectItem value="grapes">Grapes</SelectItem>
-                      <SelectItem value="pineapple">Pineapple</SelectItem>
+                      {bloodGroups.map((bg) => (
+                        <SelectItem key={bg.value} value={bg.value}>
+                          {bg.label}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -210,8 +226,11 @@ const RegisterForm = ({ role }: { role: string }) => {
             </FormItem>
           )}
         />
-
-        <Button type="submit">Sign Up</Button>
+        {loading ? (
+          <Button type="button">Loading...</Button>
+        ) : (
+          <Button type="submit">Sign Up</Button>
+        )}
 
         <div className="text-center">
           Already have an account?

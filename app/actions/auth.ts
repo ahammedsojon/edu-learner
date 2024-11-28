@@ -1,4 +1,9 @@
-import { IUser } from "@/models/user.model";
+"use server";
+
+import { signIn } from "@/auth";
+import { IUser, User } from "@/models/user.model";
+import { dbConnect } from "@/service/mongo";
+import bcrypt from "bcryptjs";
 
 export type CredentialType = {
   email: string;
@@ -6,9 +11,25 @@ export type CredentialType = {
 };
 
 export async function signInUser(data: CredentialType) {
-  console.log(data);
+  try {
+    console.log(data);
+    const response = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    });
+    return response;
+  } catch (error: any) {
+    throw new Error(error);
+  }
 }
 
 export async function registerUser(data: Partial<IUser>) {
-  console.log(data);
+  try {
+    dbConnect();
+    const hashedPassword = await bcrypt.hash(data?.password as string, 5);
+    const res = await User.create({ ...data, password: hashedPassword });
+    return JSON.parse(JSON.stringify(res));
+  } catch (error: any) {
+    throw new Error(error);
+  }
 }

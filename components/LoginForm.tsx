@@ -18,9 +18,12 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signInUser } from "@/app/actions/auth";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   // Infer the schema type
   type CredentialType = z.infer<typeof formSchema>;
   const formSchema = z.object({
@@ -41,9 +44,15 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<CredentialType> = async (values) => {
     try {
-      await signInUser(values);
-    } catch (error) {
-      console.log(error);
+      setLoading(true);
+      const res = await signInUser(values);
+      toast.success("Login successfull.");
+      router.push("/");
+    } catch (error: any) {
+      console.log(error.message);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,7 +60,7 @@ const LoginForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 w-[80%]"
+        className="space-y-4 w-[80%]"
       >
         <FormField
           control={form.control}
@@ -87,18 +96,35 @@ const LoginForm = () => {
             Forgot Password?
           </Button>
         </div>
-        <Button type="submit">Sign In</Button>
+        {!loading ? (
+          <Button type="submit">Sign In</Button>
+        ) : (
+          <Button type="button">Loading...</Button>
+        )}
 
-        <div className="text-center">
-          Don't have any account?
-          <Button
-            variant="link"
-            className="underline"
-            type="button"
-            onClick={() => router.push("/register")}
-          >
-            Register
-          </Button>
+        <div className="text-center pt-3">
+          <div>Don't have any account?</div>
+          <div>
+            Register as
+            <Button
+              variant="link"
+              className="underline p-2 h-6"
+              type="button"
+              onClick={() => router.push("/register/student")}
+            >
+              Student
+            </Button>
+            or
+            <Button
+              variant="link"
+              className="underline p-2 h-6"
+              type="button"
+              onClick={() => router.push("/register/instructor")}
+            >
+              Instructor
+            </Button>
+            .
+          </div>
         </div>
       </form>
     </Form>

@@ -22,16 +22,19 @@ export const {
         }
         try {
           const user = await User.findOne({ email: credentials?.email });
+          console.log(user);
+
           if (!user) {
             throw new Error("User not found!");
           }
-          const match = bcrypt.compare(credentials?.password, user.password);
+          const match = bcrypt.compare(
+            credentials?.password as string,
+            user.password
+          );
           if (!match) {
             throw new Error("Password doesn't match.");
           }
-          return new NextResponse("Login successfully!", {
-            status: 200,
-          });
+          return user;
         } catch (error) {
           console.log("credentails error!");
         }

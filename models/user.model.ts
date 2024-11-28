@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 // 1. Create an interface representing a document in MongoDB.
 export interface IUser {
@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser>(
   {
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     phone: { type: String, required: true },
     gender: {
@@ -51,4 +51,4 @@ const userSchema = new Schema<IUser>(
 );
 
 // 3. Create a Model.
-export const User = model<IUser>("User", userSchema);
+export const User = models.User ?? model<IUser>("User", userSchema);

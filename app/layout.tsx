@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { dbConnect } from "@/service/mongo";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"], // Specify subsets like 'latin', 'cyrillic', etc.
@@ -31,9 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cn(inter.className, poppins.className)} dark  `}>
-        <div className="h-full w-full dark:bg-gray-800">
+        <div className="dark:bg-gray-800">
           <ThemeProvider>{children}</ThemeProvider>
         </div>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );
