@@ -238,7 +238,7 @@ const RegisterForm = ({ role }: { role: string }) => {
             variant="link"
             className="underline"
             type="button"
-            onClick={() => router.push("/login")}
+            onClick={() => router.push("/auth/login")}
           >
             Sign In
           </Button>

@@ -110,7 +110,7 @@ const LoginForm = () => {
               variant="link"
               className="underline p-2 h-6"
               type="button"
-              onClick={() => router.push("/register/student")}
+              onClick={() => router.push("/auth/register/student")}
             >
               Student
             </Button>
@@ -119,7 +119,7 @@ const LoginForm = () => {
               variant="link"
               className="underline p-2 h-6"
               type="button"
-              onClick={() => router.push("/register/instructor")}
+              onClick={() => router.push("/auth/register/instructor")}
             >
               Instructor
             </Button>
