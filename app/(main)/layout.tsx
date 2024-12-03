@@ -8,6 +8,7 @@ import ThemeProvider from "@/providers/ThemeProvider";
 import Navbar from "@/components/Navbar";
 import "@/app/globals.css";
 import { SessionProvider } from "next-auth/react";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"], // Specify subsets like 'latin', 'cyrillic', etc.
@@ -36,12 +37,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${cn(inter.className, poppins.className)} dark  `}>
         <div>
-          <ThemeProvider>
-            <SessionProvider>
-              <Navbar />
-            </SessionProvider>
-            {children}
-          </ThemeProvider>
+          <SessionProvider>
+            <Navbar />
+          </SessionProvider>
+          <div className="min-h-[90vh]">{children}</div>
+          <Footer />
         </div>
         <Toaster richColors position="top-center" />
       </body>

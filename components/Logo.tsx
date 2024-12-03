@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const Logo = ({ type }) => {
+const Logo = ({ type }: { type: string }) => {
   return (
     <Link
       href={"/"}

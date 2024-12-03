@@ -46,8 +46,8 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const res = await signInUser(values);
+      window.location.href = "/";
       toast.success("Login successfull.");
-      router.push("/");
     } catch (error: any) {
       console.log(error.message);
       toast.error(error.message);

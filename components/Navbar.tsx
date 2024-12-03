@@ -1,7 +1,14 @@
 "use client";
 import Logo from "@/components/Logo";
 import { Button } from "./ui/button";
-import { CreditCard, Keyboard, LogOut, Settings, User } from "lucide-react";
+import {
+  CreditCard,
+  Keyboard,
+  LogOut,
+  Settings,
+  User,
+  LayoutDashboard,
+} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,12 +20,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Avatar from "./Avatar";
 
 const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  console.log(session);
+
   return (
     <header className="w-full h-[65px] flex items-center backdrop-blur-[40px] border-b">
       <div className="container flex items-center justify-between">
@@ -42,8 +51,15 @@ const Navbar = () => {
                       <User />
                       <span>Profile</span>
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+                      <LayoutDashboard />
+                      <span>Dashboard</span>
+                    </DropdownMenuItem>
                   </DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() => signOut()}
+                  >
                     <LogOut />
                     <span>Log out</span>
                   </DropdownMenuItem>

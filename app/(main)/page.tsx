@@ -1,3 +1,7 @@
 export default async function Homepage() {
-  return <div>This is home page</div>;
+  return (
+    <div className="h-[90vh] flex items-center justify-center">
+      <h1>This is home page</h1>
+    </div>
+  );
 }

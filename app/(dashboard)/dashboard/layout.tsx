@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { dbConnect } from "@/service/mongo";
-
+import { AppSidebar } from "./_components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 const inter = Inter({
   subsets: ["latin"], // Specify subsets like 'latin', 'cyrillic', etc.
   weight: ["400", "500", "600", "700"], // Specify font weights
@@ -32,9 +33,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${cn(inter.className, poppins.className)} dark  `}>
-        <div className="dark:bg-gray-800">
-          <ThemeProvider>{children}</ThemeProvider>
-        </div>
+        {/* <AppSidebar /> */}
+        {/* <div>{children}</div> */}
+        <SidebarProvider>
+          <AppSidebar />
+          <main className="w-full h-full">
+            <SidebarTrigger />
+            <div className="p-5">{children}</div>
+          </main>
+        </SidebarProvider>
         <Toaster richColors position="top-center" />
       </body>
     </html>

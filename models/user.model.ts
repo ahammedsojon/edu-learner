@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, Types, model, models } from "mongoose";
 
 // 1. Create an interface representing a document in MongoDB.
 export interface IUser {
@@ -12,6 +12,9 @@ export interface IUser {
   role: "instructor" | "student";
   avatar?: string;
   isDeleted: boolean;
+}
+export interface IUserWithId extends IUser {
+  _id: Types.ObjectId;
 }
 
 // 2. Create a Schema corresponding to the document interface.

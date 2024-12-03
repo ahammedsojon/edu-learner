@@ -191,7 +191,7 @@ const RegisterForm = ({ role }: { role: string }) => {
           name="bloodGroup"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>Blood Group</FormLabel>
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
