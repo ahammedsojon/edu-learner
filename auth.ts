@@ -22,7 +22,6 @@ export const {
         }
         try {
           const user = await User.findOne({ email: credentials?.email });
-          console.log(user);
 
           if (!user) {
             throw new Error("User not found!");

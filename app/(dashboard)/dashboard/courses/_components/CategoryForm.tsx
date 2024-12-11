@@ -45,7 +45,6 @@ const CategoryForm = () => {
             className="block cursor-pointer hover:bg-gray-600 p-3 rounded-full duration-300"
             onClick={() => {
               setIsEditing(!isEditing);
-              console.log(isEditing);
             }}
           >
             <Pencil size={20} />

@@ -1,6 +1,7 @@
 import { IUserWithId } from "@/models/user.model";
 
 export const replaceMongoIdInObject = (data: IUserWithId) => {
+  if (!data) return null;
   const { _id, ...rest } = data;
   return JSON.parse(JSON.stringify({ ...rest, id: _id }));
 };

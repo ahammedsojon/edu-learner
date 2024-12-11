@@ -14,19 +14,20 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Avatar from "./Avatar";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log(session);
+
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
 
   return (
     <header className="w-full h-[65px] flex items-center backdrop-blur-[40px] border-b">

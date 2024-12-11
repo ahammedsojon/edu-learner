@@ -46,7 +46,8 @@ const LoginForm = () => {
     try {
       setLoading(true);
       const res = await signInUser(values);
-      window.location.href = "/";
+      router.refresh();
+      router.push("/");
       toast.success("Login successfull.");
     } catch (error: any) {
       console.log(error.message);
@@ -90,6 +91,7 @@ const LoginForm = () => {
         />
         <div className="text-end">
           <Button
+            type="button"
             variant="link"
             onClick={() => router.push("/forgot-password")}
           >

@@ -33,9 +33,7 @@ const ModulesForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-    console.log("form submitted!", values);
-  };
+  const onSubmit: SubmitHandler<FieldValues> = async (values) => {};
   return (
     <Card>
       <CardHeader>
@@ -45,7 +43,6 @@ const ModulesForm = () => {
             className="block cursor-pointer hover:bg-gray-600 p-3 rounded-full duration-300"
             onClick={() => {
               setIsEditing(!isEditing);
-              console.log(isEditing);
             }}
           >
             <Pencil size={20} />
