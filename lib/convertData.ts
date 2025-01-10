@@ -10,7 +10,7 @@ export const replaceMongoIdInArray = (res: Record<string, unknown>[]) => {
   if (!res) return null;
   const data = res.map((each) => {
     const { _id, ...rest } = each;
-    return rest;
+    return { id: _id, ...rest };
   });
   return JSON.parse(JSON.stringify(data));
 };

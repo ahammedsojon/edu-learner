@@ -17,11 +17,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 
-const ThumbnailForm = () => {
+const ThumbnailForm = ({
+  thumbnail: courseThumbnail,
+  id,
+}: {
+  thumbnail: string;
+  id: string;
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const formSchema = z.object({
     thumbnail: z.string().min(1, "Thumbnail is required"),
@@ -52,7 +59,19 @@ const ThumbnailForm = () => {
           </span>
         </div>
         {!isEditing ? (
-          <CardDescription>React Mastery Thumbnail</CardDescription>
+          <CardDescription>
+            {courseThumbnail ? (
+              <Image
+                src={`/assets/images/courses/${courseThumbnail}`}
+                height={200}
+                width={200}
+                className="max-w-full w-full h-[100px] object-contain"
+                alt="thumbnail"
+              />
+            ) : (
+              <div>No Thubmnail</div>
+            )}
+          </CardDescription>
         ) : (
           <Form {...form}>
             <form

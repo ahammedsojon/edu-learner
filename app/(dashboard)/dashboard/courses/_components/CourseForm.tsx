@@ -18,7 +18,7 @@ const CourseForm = async ({ courseId }: TProps) => {
   return (
     <div className="grid grid-cols-2 gap-10">
       <div className="col-span-2 w-full md:max-w-[70%] mx-auto">
-        <ThumbnailForm />
+        <ThumbnailForm thumbnail={course?.thumbnail} id={course.id} />
       </div>
       <TitleForm />
       <SubTitleForm />
